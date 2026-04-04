@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Users collection - only owner can read/write
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Vault items - strict per-user access
+    match /vaultItems/{itemId} {
+      allow read: if request.auth != null && 
+                     resource.data.userId == request.auth.uid;
+      
+      allow create: if request.auth != null && 
+                       request.resource.data.userId == request.auth.uid &&
+                       request.resource.data.keys().hasAll(['userId', 'type', 'title', 'encryptedData', 'iv']) &&
+                       request.resource.data.type in ['api', 'password', 'note'];
+      
+      allow update: if request.auth != null && 
+                       resource.data.userId == request.auth.uid &&
+                       request.resource.data.userId == request.auth.uid;
+      
+      allow delete: if request.auth != null && 
+                       resource.data.userId == request.auth.uid;
+    }
+  }
+}
