@@ -46,7 +46,7 @@ Visit `http://localhost:3000`
 
 ## 📖 Documentation
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete setup and deployment instructions.
+See [DEPLOYMENT.md](./Documentation/DEPLOYMENT.md) for complete setup and deployment instructions.
 
 ## 🏗️ Project Structure
 
