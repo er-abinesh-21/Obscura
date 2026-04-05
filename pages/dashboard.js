@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { auth } from '../utils/firebase';
 import { signOut } from 'firebase/auth';
 import { getVaultItems, deleteVaultItem } from '../services/api';
@@ -86,15 +87,25 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '24px' }}>
-        <div className="spinner" style={{ width: '56px', height: '56px', borderWidth: '3px' }}></div>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '17px', fontWeight: '500' }}>Loading your vault...</p>
-      </div>
+      <>
+        <Head>
+          <title>Loading - Obscura</title>
+        </Head>
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '24px' }}>
+          <div className="spinner" style={{ width: '56px', height: '56px', borderWidth: '3px' }}></div>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '17px', fontWeight: '500' }}>Loading your vault...</p>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="container animate-slide-in">
+    <>
+      <Head>
+        <title>Dashboard - Obscura</title>
+        <meta name="description" content="Manage your secure vault - API keys, passwords, and notes" />
+      </Head>
+      <div className="container animate-slide-in">
       <ThemeToggle />
       <div className="dashboard-header animate-fade-in">
         <div>
@@ -163,5 +174,6 @@ export default function Dashboard() {
         />
       )}
     </div>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { auth } from '../utils/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { generateSalt, arrayBufferToBase64 } from '../utils/encryption';
@@ -89,7 +90,12 @@ export default function Login() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+    <>
+      <Head>
+        <title>Login - Obscura</title>
+        <meta name="description" content="Sign in to your secure vault or create a new account" />
+      </Head>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
       <ThemeToggle />
       <div className="glass animate-slide-in" style={{ padding: '64px 48px', maxWidth: '480px', width: '100%', position: 'relative' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
@@ -189,5 +195,6 @@ export default function Login() {
         </form>
       </div>
     </div>
+    </>
   );
 }

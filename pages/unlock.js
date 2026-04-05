@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import ThemeToggle from '../components/ThemeToggle';
 
 export default function Unlock() {
@@ -20,7 +21,12 @@ export default function Unlock() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+    <>
+      <Head>
+        <title>Unlock Vault - Obscura</title>
+        <meta name="description" content="Enter your master password to unlock your secure vault" />
+      </Head>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
       <ThemeToggle />
       <div className="glass" style={{ padding: '64px 48px', maxWidth: '480px', width: '100%', textAlign: 'center' }}>
         <div className="animate-float" style={{ fontSize: '96px', marginBottom: '32px', filter: 'drop-shadow(0 8px 16px rgba(0, 122, 255, 0.3))' }}>🔐</div>
@@ -52,5 +58,6 @@ export default function Unlock() {
         </form>
       </div>
     </div>
+    </>
   );
 }
