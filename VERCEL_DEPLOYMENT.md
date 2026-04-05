@@ -27,31 +27,31 @@ Go to **Settings → Environment Variables** and add these one by one:
 #### Public Variables (Client-side)
 ```
 NEXT_PUBLIC_FIREBASE_API_KEY
-Value: AIzaSyAGqtKBqd5RFXlkUNX-MC3O28VzreWslvg
+Value: 
 
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-Value: obscura-23926.firebaseapp.com
+Value: 
 
 NEXT_PUBLIC_FIREBASE_PROJECT_ID
-Value: obscura-23926
+Value: 
 
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-Value: obscura-23926.firebasestorage.app
+Value: 
 
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-Value: 861104204973
+Value: 
 
 NEXT_PUBLIC_FIREBASE_APP_ID
-Value: 1:861104204973:web:def2b6b20621940a14aa24
+Value: 
 ```
 
 #### Server-side Variables (Keep Secret)
 ```
 FIREBASE_PROJECT_ID
-Value: obscura-23926
+Value: 
 
 FIREBASE_CLIENT_EMAIL
-Value: firebase-adminsdk-fbsvc@obscura-23926.iam.gserviceaccount.com
+Value: 
 
 FIREBASE_PRIVATE_KEY
 Value: (See below for special formatting)
@@ -64,7 +64,7 @@ Value: (See below for special formatting)
 Copy this EXACT value (including the \n characters):
 
 ```
------BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAe4mCMYtVukJD\ndzF492bpwWv9zwt3ilKEERKztKxrOfsQG2JpOGKK6ktw0LW1q5a+lxshu4mIbgAo\nyPnbTEKJ+/nT4DoIn69IsKcHGBQxyxsrF2xDBM5LzqZ2eUHR7dvzM8v3jS7K5gG3\ng0WE+5KxJO67toq5CtGuvCOQHdUlDB7HQhmrgkzZrGkf3NAUuBwyyc5N8E+oJ+8d\nbH9qY7YeRx9ekUCl0Nqena9x4zQ0/9SqsyiW2/JfZWjjavXJ0+xyVe4EE6CIEHWJ\nnK1nJjpHWkbqwd87jdxEntcZOkM4HKpDMAVo87WhDwQFqiYil+kTUOw5uNdILy4U\nmDPvahzJAgMBAAECggEARjlL88nrkb1Ai6iizgVE8Kd2pMSy5Ev8yt4HurSB6yTe\nKgQzpTvDB/duypv6j2sotiQe6/GlvbaULE0WiyGJbRoXDWvTAG5x3s1EQtxQEdKN\n+Oy0vMa2FQYxySt4DgT/p/0PvyMtHS1JFxC3fkriO+rDhoyUk+oUkfFl8CBSMQ9W\nJXkdWoTo/B4gqQgz9apPXYDvMMZg7DVLLDP87wLF4tV+MgLTHN1mDxRpBcnjuSJU\nginMNifAhglQZOV3lOqYh9OnF2NfzoX/pyDeHEVJ4QPU/Y7dF42dWF/Bg7M2lOR7\ntAV12uVyvFUFdDb4Ea4+SUxQ/Pfz81Axr1y+65ae+QKBgQD1ns6Mzesr6agMHlYV\nJfl8DuIvix67FTB/7XEQX5/kmHLTGbowPJZC0m9O9tJZgRdLzfoWv/AkJ36paV0n\n0V5fvYtLGsl5TWGKxyjriWV/eKG0dZUgfI13EBWsQWNh/gzXKW2zqqZNDdHIeYeU\nUBOE6eIpHBSg1UuVzLnFy46W1wKBgQDInd7H6Cp1tAEOqZe41eFpYzi/vboSSYlw\nadRR/pVtSi10ChH2Aui3/6IS2qr+sCkOxx0Ay3cYDgoY5doFcvxwpltXAp30Ero+\nMko+kSmnqRQzc7LlAf9LKpaNVItqRd7o1H6yRa/UWjIkg7cG/aQP9+V/ad0pwiOs\n17MbgFOVXwKBgQCjD06og3wApxn9EZasa415IpheX8mDAco043kQGauYoux34LiO\nlWpb6kAi+BElgmHo3VGOENZn6iBYb658ZK52eOskbSAb+5cp/pXX6FsNiRQxLW5X\nJtjzliYNOUu1Hmd/3+0IPd4xgV8n7CZp+885iduu1wmKzI9lX4hlG4IJ+QKBgAQL\n+zR5IHIjYWoUTbUyy0s+7yQfBaPcy+Lyn4/P3N/JgUU39sjJojwj8fcDZjOhBhMA\nPTuI3ywjDF0YNd+qRCFZmboVmW4U+qDKjujYMMjrBjdLfC5WbfnsMAFF1VIderOj\npbKe6T8VWrGV3plLgIW58G0zi3yOJ/4Sk9BYNFdtAoGBAPB6xWoIJsc22N5zS8d2\nCg6+nh6nuhsue9DyODP7DTsXKzB5G85aDw/lDeJWmLFb0cZqDpH7TWL9JcQoSSmZ\nGh2gnTDQNtv+conSk6dT6MHbJ2gfXk34AgvwmI2TaKlu8WaybIAxwXP2XiDMJdk/\nzY+fwYmAuvjwY3a/1vtgMyY3\n-----END PRIVATE KEY-----\n
+-----BEGIN PRIVATE KEY----- and -----END PRIVATE KEY-----\n
 ```
 
 **Important Notes:**
@@ -81,7 +81,7 @@ For each variable, select which environments it should be available in:
 
 ### Step 6: Deploy
 
-Click "Deploy" and Vercel will build your application.
+Click "  Deploy" and Vercel will build your application.
 
 ---
 
