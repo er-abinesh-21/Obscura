@@ -36,49 +36,9 @@ Select your existing project or create a new one.
 Run these commands one by one:
 
 ```cmd
-vercel env add NEXT_PUBLIC_FIREBASE_API_KEY production
+vercel env add key
 ```
-When prompted, paste: `AIzaSyAGqtKBqd5RFXlkUNX-MC3O28VzreWslvg`
-
-```cmd
-vercel env add NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN production
-```
-Paste: `obscura-23926.firebaseapp.com`
-
-```cmd
-vercel env add NEXT_PUBLIC_FIREBASE_PROJECT_ID production
-```
-Paste: `obscura-23926`
-
-```cmd
-vercel env add NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET production
-```
-Paste: `obscura-23926.firebasestorage.app`
-
-```cmd
-vercel env add NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID production
-```
-Paste: `861104204973`
-
-```cmd
-vercel env add NEXT_PUBLIC_FIREBASE_APP_ID production
-```
-Paste: `1:861104204973:web:def2b6b20621940a14aa24`
-
-```cmd
-vercel env add FIREBASE_PROJECT_ID production
-```
-Paste: `obscura-23926`
-
-```cmd
-vercel env add FIREBASE_CLIENT_EMAIL production
-```
-Paste: `firebase-adminsdk-fbsvc@obscura-23926.iam.gserviceaccount.com`
-
-```cmd
-vercel env add FIREBASE_PRIVATE_KEY production
-```
-When prompted, paste the ENTIRE private key (all lines from BEGIN to END).
+paste the Values for the Key.
 
 ## Step 6: Deploy
 
