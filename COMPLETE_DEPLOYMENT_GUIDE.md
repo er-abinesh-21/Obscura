@@ -207,7 +207,7 @@ You'll see "Configure Project" page:
 #### Add Variable 1: NEXT_PUBLIC_FIREBASE_API_KEY
 
 1. In the **"Key"** field, type: `NEXT_PUBLIC_FIREBASE_API_KEY`
-2. In the **"Value"** field, paste: `AIzaSyAGqtKBqd5RFXlkUNX-MC3O28VzreWslvg`
+2. In the **"Value"** field, paste: `…`
 3. Leave all three checkboxes checked:
    - ✅ Production
    - ✅ Preview
@@ -217,49 +217,49 @@ You'll see "Configure Project" page:
 #### Add Variable 2: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
 
 1. In the **"Key"** field, type: `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
-2. In the **"Value"** field, paste: `obscura-23926.firebaseapp.com`
+2. In the **"Value"** field, paste: `…`
 3. Keep all three checkboxes checked
 4. Click **"Add"**
 
 #### Add Variable 3: NEXT_PUBLIC_FIREBASE_PROJECT_ID
 
 1. **Key**: `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
-2. **Value**: `obscura-23926`
+2. **Value**: `…`
 3. Keep all checkboxes checked
 4. Click **"Add"**
 
 #### Add Variable 4: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
 
 1. **Key**: `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
-2. **Value**: `obscura-23926.firebasestorage.app`
+2. **Value**: `…`
 3. Keep all checkboxes checked
 4. Click **"Add"**
 
 #### Add Variable 5: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
 
 1. **Key**: `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
-2. **Value**: `861104204973`
+2. **Value**: `…`
 3. Keep all checkboxes checked
 4. Click **"Add"**
 
 #### Add Variable 6: NEXT_PUBLIC_FIREBASE_APP_ID
 
 1. **Key**: `NEXT_PUBLIC_FIREBASE_APP_ID`
-2. **Value**: `1:861104204973:web:def2b6b20621940a14aa24`
+2. **Value**: `…`
 3. Keep all checkboxes checked
 4. Click **"Add"**
 
 #### Add Variable 7: FIREBASE_PROJECT_ID
 
 1. **Key**: `FIREBASE_PROJECT_ID`
-2. **Value**: `obscura-23926`
+2. **Value**: `…`
 3. Keep all checkboxes checked
 4. Click **"Add"**
 
 #### Add Variable 8: FIREBASE_CLIENT_EMAIL
 
 1. **Key**: `FIREBASE_CLIENT_EMAIL`
-2. **Value**: `firebase-adminsdk-fbsvc@obscura-23926.iam.gserviceaccount.com`
+2. **Value**: `…`
 3. Keep all checkboxes checked
 4. Click **"Add"**
 
@@ -270,9 +270,7 @@ You'll see "Configure Project" page:
 1. **Key**: `FIREBASE_PRIVATE_KEY`
 2. **Value**: Copy this ENTIRE text (including \n characters):
 
-```
------BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAe4mCMYtVukJD\ndzF492bpwWv9zwt3ilKEERKztKxrOfsQG2JpOGKK6ktw0LW1q5a+lxshu4mIbgAo\nyPnbTEKJ+/nT4DoIn69IsKcHGBQxyxsrF2xDBM5LzqZ2eUHR7dvzM8v3jS7K5gG3\ng0WE+5KxJO67toq5CtGuvCOQHdUlDB7HQhmrgkzZrGkf3NAUuBwyyc5N8E+oJ+8d\nbH9qY7YeRx9ekUCl0Nqena9x4zQ0/9SqsyiW2/JfZWjjavXJ0+xyVe4EE6CIEHWJ\nnK1nJjpHWkbqwd87jdxEntcZOkM4HKpDMAVo87WhDwQFqiYil+kTUOw5uNdILy4U\nmDPvahzJAgMBAAECggEARjlL88nrkb1Ai6iizgVE8Kd2pMSy5Ev8yt4HurSB6yTe\nKgQzpTvDB/duypv6j2sotiQe6/GlvbaULE0WiyGJbRoXDWvTAG5x3s1EQtxQEdKN\n+Oy0vMa2FQYxySt4DgT/p/0PvyMtHS1JFxC3fkriO+rDhoyUk+oUkfFl8CBSMQ9W\nJXkdWoTo/B4gqQgz9apPXYDvMMZg7DVLLDP87wLF4tV+MgLTHN1mDxRpBcnjuSJU\nginMNifAhglQZOV3lOqYh9OnF2NfzoX/pyDeHEVJ4QPU/Y7dF42dWF/Bg7M2lOR7\ntAV12uVyvFUFdDb4Ea4+SUxQ/Pfz81Axr1y+65ae+QKBgQD1ns6Mzesr6agMHlYV\nJfl8DuIvix67FTB/7XEQX5/kmHLTGbowPJZC0m9O9tJZgRdLzfoWv/AkJ36paV0n\n0V5fvYtLGsl5TWGKxyjriWV/eKG0dZUgfI13EBWsQWNh/gzXKW2zqqZNDdHIeYeU\nUBOE6eIpHBSg1UuVzLnFy46W1wKBgQDInd7H6Cp1tAEOqZe41eFpYzi/vboSSYlw\nadRR/pVtSi10ChH2Aui3/6IS2qr+sCkOxx0Ay3cYDgoY5doFcvxwpltXAp30Ero+\nMko+kSmnqRQzc7LlAf9LKpaNVItqRd7o1H6yRa/UWjIkg7cG/aQP9+V/ad0pwiOs\n17MbgFOVXwKBgQCjD06og3wApxn9EZasa415IpheX8mDAco043kQGauYoux34LiO\nlWpb6kAi+BElgmHo3VGOENZn6iBYb658ZK52eOskbSAb+5cp/pXX6FsNiRQxLW5X\nJtjzliYNOUu1Hmd/3+0IPd4xgV8n7CZp+885iduu1wmKzI9lX4hlG4IJ+QKBgAQL\n+zR5IHIjYWoUTbUyy0s+7yQfBaPcy+Lyn4/P3N/JgUU39sjJojwj8fcDZjOhBhMA\nPTuI3ywjDF0YNd+qRCFZmboVmW4U+qDKjujYMMjrBjdLfC5WbfnsMAFF1VIderOj\npbKe6T8VWrGV3plLgIW58G0zi3yOJ/4Sk9BYNFdtAoGBAPB6xWoIJsc22N5zS8d2\nCg6+nh6nuhsue9DyODP7DTsXKzB5G85aDw/lDeJWmLFb0cZqDpH7TWL9JcQoSSmZ\nGh2gnTDQNtv+conSk6dT6MHbJ2gfXk34AgvwmI2TaKlu8WaybIAxwXP2XiDMJdk/\nzY+fwYmAuvjwY3a/1vtgMyY3\n-----END PRIVATE KEY-----\n
-```
+`…`
 
 **IMPORTANT NOTES:**
 - Do NOT add quotes `"` at the beginning or end
