@@ -38,7 +38,7 @@ Visit `http://localhost:3000`
 ## 📦 Tech Stack
 
 - **Frontend**: React (Next.js)
-- **Backend**: Vercel Serverless Functions
+- **Backend**: Next.js API Routes (serverless on Vercel)
 - **Database**: Firebase Firestore
 - **Authentication**: Firebase Auth
 - **Encryption**: Web Crypto API
@@ -52,20 +52,20 @@ See [DEPLOYMENT.md](./Documentation/DEPLOYMENT.md) for complete setup and deploy
 
 ```
 obscura/
-├── api/
-│   ├── middleware/
-│   │   └── auth.js          # Firebase token verification
-│   ├── vault/
-│   │   ├── index.js         # GET/POST vault items
-│   │   └── [id].js          # PUT/DELETE vault items
-│   └── user.js              # User salt management
+├── pages/
+│   ├── api/
+│   │   ├── middleware/
+│   │   │   └── auth.js          # Firebase token verification
+│   │   ├── vault/
+│   │   │   ├── index.js         # GET/POST vault items
+│   │   │   └── [id].js          # PUT/DELETE vault items
+│   │   └── user.js              # User salt management
+│   ├── index.js                 # Login/Signup
+│   ├── unlock.js                # Master password entry
+│   └── dashboard.js             # Main vault interface
 ├── components/
 │   ├── VaultCard.js         # Display vault items
 │   └── AddEditModal.js      # Create/edit items
-├── pages/
-│   ├── index.js             # Login/Signup
-│   ├── unlock.js            # Master password entry
-│   └── dashboard.js         # Main vault interface
 ├── services/
 │   └── api.js               # API client
 ├── utils/
