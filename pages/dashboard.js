@@ -34,21 +34,33 @@ export default function Dashboard() {
   const loadItems = async () => {
     try {
       const data = await getVaultItems();
-      setItems(data);
-      await decryptItems(data);
+      const safeData = Array.isArray(data) ? data : [];
+
+      setItems(safeData);
+      await decryptItems(safeData);
     } catch (error) {
       console.error('Load error:', error);
+      setItems([]);
+      setDecryptedItems([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const decryptItems = async (itemsToDecrypt) => {
+  const decryptItems = async (itemsToDecrypt = []) => {
     const masterPassword = sessionStorage.getItem('masterPassword');
-    const salt = base64ToUint8Array(sessionStorage.getItem('salt'));
+    const saltBase64 = sessionStorage.getItem('salt');
+
+    if (!masterPassword || !saltBase64) {
+      setDecryptedItems([]);
+      return;
+    }
+
+    const safeItems = Array.isArray(itemsToDecrypt) ? itemsToDecrypt : [];
+    const salt = base64ToUint8Array(saltBase64);
     
     const decrypted = await Promise.all(
-      itemsToDecrypt.map(async (item) => {
+      safeItems.map(async (item) => {
         try {
           const plaintext = await decryptData(item.encryptedData, item.iv, masterPassword, salt);
           return { ...item, decryptedData: JSON.parse(plaintext) };
@@ -66,8 +78,8 @@ export default function Dashboard() {
     
     try {
       await deleteVaultItem(id);
-      setItems(items.filter(i => i.id !== id));
-      setDecryptedItems(decryptedItems.filter(i => i.id !== id));
+      setItems((prev) => (Array.isArray(prev) ? prev.filter((i) => i.id !== id) : []));
+      setDecryptedItems((prev) => (Array.isArray(prev) ? prev.filter((i) => i.id !== id) : []));
     } catch (error) {
       alert('Delete failed');
     }
@@ -79,9 +91,12 @@ export default function Dashboard() {
     router.push('/');
   };
 
-  const filteredItems = decryptedItems.filter(item => {
+  const safeItems = Array.isArray(items) ? items : [];
+  const safeDecryptedItems = Array.isArray(decryptedItems) ? decryptedItems : [];
+
+  const filteredItems = safeDecryptedItems.filter((item) => {
     const matchesFilter = filter === 'all' || item.type === filter;
-    const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = (item.title || '').toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -113,8 +128,8 @@ export default function Dashboard() {
             Obscura
           </h1>
           <p className="hero-subtitle" style={{ fontSize: '19px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontWeight: '600', color: 'var(--primary)' }}>{items.length}</span>
-            <span>{items.length === 1 ? 'item' : 'items'} stored securely</span>
+            <span style={{ fontWeight: '600', color: 'var(--primary)' }}>{safeItems.length}</span>
+            <span>{safeItems.length === 1 ? 'item' : 'items'} stored securely</span>
           </p>
         </div>
         <button onClick={handleLogout} className="btn btn-logout">

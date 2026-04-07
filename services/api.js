@@ -76,7 +76,9 @@ export async function getVaultItems() {
   const response = await axios.get(`${API_BASE}/vault`, {
     headers: { Authorization: `Bearer ${token}` }
   });
-  return response.data.items;
+
+  const items = response?.data?.items;
+  return Array.isArray(items) ? items : [];
 }
 
 export async function createVaultItem(item) {
