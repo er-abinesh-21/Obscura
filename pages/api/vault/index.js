@@ -21,21 +21,25 @@ export default async function handler(req, res) {
     
     if (req.method === 'POST') {
       const { type, title, encryptedData, iv, category } = req.body;
+      const normalizedType = normalizeType(type);
+      const safeTitle = typeof title === 'string' ? title.trim() : '';
+      const safeEncryptedData = typeof encryptedData === 'string' ? encryptedData.trim() : '';
+      const safeIv = typeof iv === 'string' ? iv.trim() : '';
       
-      if (!type || !title || !encryptedData || !iv) {
-        return res.status(400).json({ error: 'Missing required fields' });
+      if (!safeTitle || !safeEncryptedData || !safeIv) {
+        return res.status(400).json({ error: 'Missing required fields: title, encryptedData, or iv' });
       }
       
-      if (!['api', 'password', 'note'].includes(type)) {
-        return res.status(400).json({ error: 'Invalid type' });
+      if (!normalizedType) {
+        return res.status(400).json({ error: 'Invalid type. Use api, password, or note.' });
       }
       
       const newItem = {
         userId,
-        type,
-        title: sanitize(title),
-        encryptedData,
-        iv,
+        type: normalizedType,
+        title: sanitize(safeTitle),
+        encryptedData: safeEncryptedData,
+        iv: safeIv,
         category: category || 'general',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -63,4 +67,22 @@ export default async function handler(req, res) {
 
 function sanitize(str) {
   return str.replace(/[<>]/g, '');
+}
+
+function normalizeType(type) {
+  const value = String(type || '').trim().toLowerCase();
+
+  if (['api', 'apikey', 'api key', 'api-key'].includes(value)) {
+    return 'api';
+  }
+
+  if (['password', 'pass', 'credential', 'credentials'].includes(value)) {
+    return 'password';
+  }
+
+  if (['note', 'secure note', 'secure-note', 'notes'].includes(value)) {
+    return 'note';
+  }
+
+  return null;
 }

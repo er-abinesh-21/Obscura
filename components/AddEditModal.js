@@ -2,6 +2,20 @@ import { useState, useEffect } from 'react';
 import { encryptData, base64ToUint8Array } from '../utils/encryption';
 import { createVaultItem, updateVaultItem } from '../services/api';
 
+function normalizeType(type) {
+  const value = String(type || '').trim().toLowerCase();
+
+  if (['api', 'apikey', 'api key', 'api-key'].includes(value)) return 'api';
+  if (['password', 'pass', 'credential', 'credentials'].includes(value)) return 'password';
+  if (['note', 'secure note', 'secure-note', 'notes'].includes(value)) return 'note';
+
+  return null;
+}
+
+function getApiErrorMessage(err) {
+  return err?.response?.data?.error || err?.message || 'Failed to save item';
+}
+
 export default function AddEditModal({ item, onClose, onSave }) {
   const [type, setType] = useState(item?.type || 'password');
   const [title, setTitle] = useState(item?.title || '');
@@ -30,15 +44,42 @@ export default function AddEditModal({ item, onClose, onSave }) {
 
     try {
       const masterPassword = sessionStorage.getItem('masterPassword');
-      const salt = base64ToUint8Array(sessionStorage.getItem('salt'));
+      const saltBase64 = sessionStorage.getItem('salt');
+      const normalizedType = normalizeType(type);
+
+      if (!masterPassword || !saltBase64) {
+        throw new Error('Session expired. Please sign in again.');
+      }
+
+      if (!normalizedType) {
+        throw new Error('Invalid item type selected');
+      }
+
+      if (!title.trim()) {
+        throw new Error('Title is required');
+      }
+
+      const salt = base64ToUint8Array(saltBase64);
 
       let dataToEncrypt = {};
       
-      if (type === 'api') {
+      if (normalizedType === 'api') {
+        if (!formData.key.trim()) {
+          throw new Error('API key is required');
+        }
+
         dataToEncrypt = { key: formData.key, url: formData.url };
-      } else if (type === 'password') {
+      } else if (normalizedType === 'password') {
+        if (!formData.username.trim() || !formData.password.trim()) {
+          throw new Error('Username and password are required');
+        }
+
         dataToEncrypt = { username: formData.username, password: formData.password, url: formData.url };
-      } else if (type === 'note') {
+      } else if (normalizedType === 'note') {
+        if (!formData.content.trim()) {
+          throw new Error('Note content is required');
+        }
+
         dataToEncrypt = { content: formData.content };
       }
 
@@ -49,8 +90,8 @@ export default function AddEditModal({ item, onClose, onSave }) {
       );
 
       const payload = {
-        type,
-        title,
+        type: normalizedType,
+        title: title.trim(),
         encryptedData,
         iv,
         category
@@ -64,7 +105,7 @@ export default function AddEditModal({ item, onClose, onSave }) {
 
       onSave();
     } catch (err) {
-      setError(err.message);
+      setError(getApiErrorMessage(err));
     } finally {
       setLoading(false);
     }
