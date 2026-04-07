@@ -7,6 +7,15 @@ import { generateSalt, arrayBufferToBase64 } from '../utils/encryption';
 import { createUser, getUserSalt } from '../services/api';
 import ThemeToggle from '../components/ThemeToggle';
 
+function isNotFoundError(err) {
+  const status = err?.response?.status ?? err?.status;
+  return status === 404 || /status code 404/i.test(err?.message || '');
+}
+
+function getReadableError(err) {
+  return err?.response?.data?.error || err?.message || 'Something went wrong';
+}
+
 export default function Login() {
   const [isSignup, setIsSignup] = useState(false);
   const [email, setEmail] = useState('');
@@ -15,6 +24,23 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const initializeVaultProfile = async (profileEmail, token) => {
+    const masterPass = prompt('No vault profile found. Set your master password (min 8 characters):');
+
+    if (!masterPass || masterPass.length < 8) {
+      throw new Error('Master password must be at least 8 characters');
+    }
+
+    const salt = generateSalt();
+    const saltBase64 = arrayBufferToBase64(salt);
+
+    await createUser(profileEmail, saltBase64, token);
+
+    sessionStorage.setItem('masterPassword', masterPass);
+    sessionStorage.setItem('salt', saltBase64);
+    router.push('/dashboard');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,25 +54,33 @@ export default function Login() {
         }
 
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const token = await userCredential.user.getIdToken();
         const salt = generateSalt();
         const saltBase64 = arrayBufferToBase64(salt);
         
-        await createUser(email, saltBase64);
+        await createUser(email, saltBase64, token);
         
         sessionStorage.setItem('masterPassword', masterPassword);
         sessionStorage.setItem('salt', saltBase64);
         
         router.push('/dashboard');
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const token = await userCredential.user.getIdToken();
         
-        const salt = await getUserSalt();
+        const salt = await getUserSalt(token, { allowNotFound: true });
+
+        if (!salt) {
+          await initializeVaultProfile(email, token);
+          return;
+        }
+
         sessionStorage.setItem('salt', salt);
         
         router.push('/unlock');
       }
     } catch (err) {
-      setError(err.message);
+      setError(getReadableError(err));
     } finally {
       setLoading(false);
     }
@@ -60,30 +94,27 @@ export default function Login() {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+      const token = await user.getIdToken();
+      const profileEmail = user.email?.trim() || '';
 
-      try {
-        const salt = await getUserSalt();
+      if (!profileEmail) {
+        throw new Error('Google account does not have an email address');
+      }
+
+      const salt = await getUserSalt(token, { allowNotFound: true });
+
+      if (salt) {
         sessionStorage.setItem('salt', salt);
         router.push('/unlock');
-      } catch (err) {
-        if (err.message.includes('not found')) {
-          const salt = generateSalt();
-          const saltBase64 = arrayBufferToBase64(salt);
-          await createUser(user.email, saltBase64);
-          sessionStorage.setItem('salt', saltBase64);
-          
-          const masterPass = prompt('Set your master password (min 8 characters):');
-          if (!masterPass || masterPass.length < 8) {
-            throw new Error('Master password must be at least 8 characters');
-          }
-          sessionStorage.setItem('masterPassword', masterPass);
-          router.push('/dashboard');
-        } else {
-          throw err;
-        }
+      } else {
+        await initializeVaultProfile(profileEmail, token);
       }
     } catch (err) {
-      setError(err.message);
+      if (isNotFoundError(err)) {
+        setError('Vault profile not found. Please try again to initialize your vault.');
+      } else {
+        setError(getReadableError(err));
+      }
     } finally {
       setLoading(false);
     }
