@@ -17,7 +17,7 @@ function getApiErrorMessage(err) {
 }
 
 export default function AddEditModal({ item, onClose, onSave }) {
-  const [type, setType] = useState(item?.type || 'password');
+  const [type, setType] = useState(normalizeType(item?.type) || 'password');
   const [title, setTitle] = useState(item?.title || '');
   const [category, setCategory] = useState(item?.category || 'general');
   const [formData, setFormData] = useState({
@@ -34,6 +34,10 @@ export default function AddEditModal({ item, onClose, onSave }) {
   useEffect(() => {
     if (item?.decryptedData) {
       setFormData(item.decryptedData);
+    }
+
+    if (item?.type) {
+      setType(normalizeType(item.type) || 'password');
     }
   }, [item]);
 
@@ -89,12 +93,19 @@ export default function AddEditModal({ item, onClose, onSave }) {
         salt
       );
 
+      const safeEncryptedData = typeof encryptedData === 'string' ? encryptedData.trim() : '';
+      const safeIv = typeof iv === 'string' ? iv.trim() : '';
+
+      if (!safeEncryptedData || !safeIv) {
+        throw new Error('Encryption failed. Please try again.');
+      }
+
       const payload = {
         type: normalizedType,
         title: title.trim(),
-        encryptedData,
-        iv,
-        category
+        encryptedData: safeEncryptedData,
+        iv: safeIv,
+        category: String(category || 'general').trim() || 'general'
       };
 
       if (item) {

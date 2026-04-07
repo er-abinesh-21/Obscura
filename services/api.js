@@ -83,17 +83,40 @@ export async function getVaultItems() {
 
 export async function createVaultItem(item) {
   const token = await getAuthToken();
-  const response = await axios.post(`${API_BASE}/vault`, item, {
-    headers: { Authorization: `Bearer ${token}` }
+  const payload = {
+    type: String(item?.type || '').trim(),
+    title: String(item?.title || '').trim(),
+    encryptedData: String(item?.encryptedData || '').trim(),
+    iv: String(item?.iv || '').trim(),
+    category: String(item?.category || 'general').trim() || 'general'
+  };
+
+  const response = await axios.post(`${API_BASE}/vault`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
   });
+
   return response.data;
 }
 
 export async function updateVaultItem(id, updates) {
   const token = await getAuthToken();
-  const response = await axios.put(`${API_BASE}/vault/${id}`, updates, {
-    headers: { Authorization: `Bearer ${token}` }
+  const payload = {
+    title: updates?.title ? String(updates.title).trim() : undefined,
+    encryptedData: updates?.encryptedData ? String(updates.encryptedData).trim() : undefined,
+    iv: updates?.iv ? String(updates.iv).trim() : undefined,
+    category: updates?.category ? String(updates.category).trim() : undefined
+  };
+
+  const response = await axios.put(`${API_BASE}/vault/${id}`, payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
   });
+
   return response.data;
 }
 

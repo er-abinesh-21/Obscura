@@ -20,18 +20,30 @@ export default async function handler(req, res) {
     }
     
     if (req.method === 'POST') {
-      const { type, title, encryptedData, iv, category } = req.body;
+      const { type, title, encryptedData, iv, category } = normalizeVaultBody(req.body);
       const normalizedType = normalizeType(type);
       const safeTitle = typeof title === 'string' ? title.trim() : '';
       const safeEncryptedData = typeof encryptedData === 'string' ? encryptedData.trim() : '';
       const safeIv = typeof iv === 'string' ? iv.trim() : '';
+      const safeCategory = normalizeCategory(category);
+      const missingFields = [];
+
+      if (!safeTitle) missingFields.push('title');
+      if (!safeEncryptedData) missingFields.push('encryptedData');
+      if (!safeIv) missingFields.push('iv');
       
-      if (!safeTitle || !safeEncryptedData || !safeIv) {
-        return res.status(400).json({ error: 'Missing required fields: title, encryptedData, or iv' });
+      if (missingFields.length > 0) {
+        return res.status(400).json({
+          error: 'Missing required fields',
+          missingFields
+        });
       }
       
       if (!normalizedType) {
-        return res.status(400).json({ error: 'Invalid type. Use api, password, or note.' });
+        return res.status(400).json({
+          error: 'Invalid type. Use api, password, or note.',
+          receivedType: typeof type === 'string' ? type : null
+        });
       }
       
       const newItem = {
@@ -40,7 +52,7 @@ export default async function handler(req, res) {
         title: sanitize(safeTitle),
         encryptedData: safeEncryptedData,
         iv: safeIv,
-        category: category || 'general',
+        category: safeCategory,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
@@ -69,18 +81,57 @@ function sanitize(str) {
   return str.replace(/[<>]/g, '');
 }
 
+function normalizeCategory(category) {
+  const value = typeof category === 'string' ? category.trim() : '';
+
+  if (!value) {
+    return 'general';
+  }
+
+  return sanitize(value).slice(0, 64);
+}
+
+function normalizeVaultBody(rawBody) {
+  const body = parseBody(rawBody);
+
+  return {
+    type: body.type ?? body.itemType ?? body.kind ?? '',
+    title: body.title ?? body.name ?? '',
+    encryptedData: body.encryptedData ?? body.encrypted_payload ?? body.ciphertext ?? body.data ?? '',
+    iv: body.iv ?? body.initializationVector ?? body.nonce ?? '',
+    category: body.category ?? body.group ?? 'general'
+  };
+}
+
+function parseBody(rawBody) {
+  if (!rawBody) {
+    return {};
+  }
+
+  if (typeof rawBody === 'string') {
+    try {
+      const parsed = JSON.parse(rawBody);
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  return typeof rawBody === 'object' && !Array.isArray(rawBody) ? rawBody : {};
+}
+
 function normalizeType(type) {
   const value = String(type || '').trim().toLowerCase();
 
-  if (['api', 'apikey', 'api key', 'api-key'].includes(value)) {
+  if (['api', 'apikey', 'api key', 'api-key', 'apikeys', 'api keys', 'api_keys'].includes(value)) {
     return 'api';
   }
 
-  if (['password', 'pass', 'credential', 'credentials'].includes(value)) {
+  if (['password', 'pass', 'credential', 'credentials', 'passwords', 'login', 'logins'].includes(value)) {
     return 'password';
   }
 
-  if (['note', 'secure note', 'secure-note', 'notes'].includes(value)) {
+  if (['note', 'secure note', 'secure-note', 'secure_note', 'securenote', 'notes', 'memo'].includes(value)) {
     return 'note';
   }
 
