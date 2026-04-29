@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { encryptData, base64ToUint8Array } from '../utils/encryption';
 import { createVaultItem, updateVaultItem } from '../services/api';
+import { AlertCircle } from './Icons';
 
 function normalizeType(type) {
   const value = String(type || '').trim().toLowerCase();
@@ -127,9 +128,10 @@ export default function AddEditModal({ item, onClose, onSave }) {
       case 'api':
         return (
           <>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>API Key</label>
+            <div className="form-group">
+              <label className="form-label" htmlFor="modal-api-key">API Key</label>
               <input
+                id="modal-api-key"
                 type="text"
                 className="input"
                 value={formData.key}
@@ -137,9 +139,10 @@ export default function AddEditModal({ item, onClose, onSave }) {
                 required
               />
             </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>URL (optional)</label>
+            <div className="form-group">
+              <label className="form-label" htmlFor="modal-api-url">URL (optional)</label>
               <input
+                id="modal-api-url"
                 type="url"
                 className="input"
                 value={formData.url}
@@ -152,9 +155,10 @@ export default function AddEditModal({ item, onClose, onSave }) {
       case 'password':
         return (
           <>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Username/Email</label>
+            <div className="form-group">
+              <label className="form-label" htmlFor="modal-username">Username / Email</label>
               <input
+                id="modal-username"
                 type="text"
                 className="input"
                 value={formData.username}
@@ -162,9 +166,10 @@ export default function AddEditModal({ item, onClose, onSave }) {
                 required
               />
             </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Password</label>
+            <div className="form-group">
+              <label className="form-label" htmlFor="modal-password">Password</label>
               <input
+                id="modal-password"
                 type="password"
                 className="input"
                 value={formData.password}
@@ -172,9 +177,10 @@ export default function AddEditModal({ item, onClose, onSave }) {
                 required
               />
             </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>URL (optional)</label>
+            <div className="form-group">
+              <label className="form-label" htmlFor="modal-pass-url">URL (optional)</label>
               <input
+                id="modal-pass-url"
                 type="url"
                 className="input"
                 value={formData.url}
@@ -186,9 +192,10 @@ export default function AddEditModal({ item, onClose, onSave }) {
       
       case 'note':
         return (
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Content</label>
+          <div className="form-group">
+            <label className="form-label" htmlFor="modal-content">Content</label>
             <textarea
+              id="modal-content"
               className="input"
               value={formData.content}
               onChange={(e) => setFormData({ ...formData, content: e.target.value })}
@@ -201,16 +208,15 @@ export default function AddEditModal({ item, onClose, onSave }) {
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose} style={{ animation: 'fadeIn 0.3s var(--transition-curve)' }}>
-      <div className="modal animate-slide-in" onClick={(e) => e.stopPropagation()}>
-        <h2 style={{ marginBottom: '24px', fontSize: '28px', fontWeight: '700', letterSpacing: '-0.5px', background: 'linear-gradient(135deg, var(--primary), var(--primary-light))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-          {item ? 'Edit Item' : 'Add New Item'}
-        </h2>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <h2 className="modal-title">{item ? 'Edit Item' : 'Add New Item'}</h2>
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Type</label>
+        <form onSubmit={handleSubmit} id="vault-item-form">
+          <div className="form-group">
+            <label className="form-label" htmlFor="modal-type">Type</label>
             <select
+              id="modal-type"
               className="input"
               value={type}
               onChange={(e) => setType(e.target.value)}
@@ -222,9 +228,10 @@ export default function AddEditModal({ item, onClose, onSave }) {
             </select>
           </div>
 
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Title</label>
+          <div className="form-group">
+            <label className="form-label" htmlFor="modal-title">Title</label>
             <input
+              id="modal-title"
               type="text"
               className="input"
               value={title}
@@ -233,9 +240,10 @@ export default function AddEditModal({ item, onClose, onSave }) {
             />
           </div>
 
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Category</label>
+          <div className="form-group">
+            <label className="form-label" htmlFor="modal-category">Category</label>
             <select
+              id="modal-category"
               className="input"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -250,16 +258,17 @@ export default function AddEditModal({ item, onClose, onSave }) {
           {renderFields()}
 
           {error && (
-            <div style={{ padding: '12px', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid var(--danger)', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>
-              {error}
+            <div className="error-box">
+              <AlertCircle size={16} />
+              <span>{error}</span>
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <button type="submit" className="btn btn-primary" style={{ flex: 1 }} disabled={loading}>
+          <div className="modal-actions">
+            <button type="submit" className="btn btn-primary" disabled={loading} id="modal-save">
               {loading ? 'Saving...' : 'Save'}
             </button>
-            <button type="button" onClick={onClose} className="btn btn-secondary" style={{ flex: 1 }}>
+            <button type="button" onClick={onClose} className="btn btn-secondary" id="modal-cancel">
               Cancel
             </button>
           </div>

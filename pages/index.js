@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithP
 import { generateSalt, arrayBufferToBase64 } from '../utils/encryption';
 import { createUser, getUserSalt } from '../services/api';
 import ThemeToggle from '../components/ThemeToggle';
+import { ShieldLock, GoogleIcon, AlertCircle, MailIcon, LockIcon, KeyIcon } from '../components/Icons';
 
 function isNotFoundError(err) {
   const status = err?.response?.status ?? err?.status;
@@ -123,109 +124,125 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Login - Obscura</title>
+        <title>{isSignup ? 'Create Account' : 'Sign In'} — Obscura</title>
         <meta name="description" content="Sign in to your secure vault or create a new account" />
       </Head>
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-      <ThemeToggle />
-      <div className="glass animate-slide-in" style={{ padding: '64px 48px', maxWidth: '480px', width: '100%', position: 'relative' }}>
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <div className="animate-float" style={{ fontSize: '72px', marginBottom: '24px', filter: 'drop-shadow(0 8px 24px rgba(10, 132, 255, 0.4))' }}>🔒</div>
-          <h1 className="hero-title" style={{ fontSize: '48px', marginBottom: '16px' }}>Obscura</h1>
-          <p className="hero-subtitle" style={{ fontSize: '19px', fontWeight: '400', color: 'var(--text-secondary)' }}>
-            {isSignup ? 'Create your secure vault' : 'Welcome back'}
-          </p>
-        </div>
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'block', marginBottom: '12px', fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.2px' }}>Email</label>
-            <input
-              type="email"
-              className="input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@example.com"
-              required
-            />
+      <div className="auth-wrapper">
+        <ThemeToggle />
+
+        <div className="glass auth-card animate-slide-in">
+          <div className="auth-header">
+            <img src="/Obscura_Logo.png" alt="Obscura Logo" className="auth-icon" style={{ width: '64px', height: '64px', objectFit: 'contain' }} />
+            <h1 className="auth-title">Obscura</h1>
+            <p className="auth-subtitle">
+              {isSignup ? 'Create your secure vault' : 'Welcome back'}
+            </p>
           </div>
 
-          <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'block', marginBottom: '12px', fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.2px' }}>
-              Password
-            </label>
-            <input
-              type="password"
-              className="input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-
-          {isSignup && (
-            <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', marginBottom: '12px', fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.2px' }}>
-                Master Password
-              </label>
-              <input
-                type="password"
-                className="input"
-                value={masterPassword}
-                onChange={(e) => setMasterPassword(e.target.value)}
-                placeholder="For encryption only"
-                required
-              />
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '10px', lineHeight: '1.5' }}>
-                This password encrypts your data. It cannot be recovered if lost.
-              </p>
+          <form onSubmit={handleSubmit} id="auth-form">
+            <div className="form-group">
+              <label className="form-label" htmlFor="auth-email">Email</label>
+              <div className="input-with-icon">
+                <MailIcon size={18} className="input-icon" />
+                <input
+                  id="auth-email"
+                  type="email"
+                  className="input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  required
+                />
+              </div>
             </div>
-          )}
 
-          {error && (
-            <div style={{ padding: '16px 20px', background: 'rgba(255, 45, 85, 0.1)', border: '1px solid rgba(255, 45, 85, 0.3)', borderRadius: 'var(--radius-md)', marginBottom: '24px', fontSize: '15px', color: 'var(--secondary)' }}>
-              {error}
+            <div className="form-group">
+              <label className="form-label" htmlFor="auth-password">Password</label>
+              <div className="input-with-icon">
+                <LockIcon size={18} className="input-icon" />
+                <input
+                  id="auth-password"
+                  type="password"
+                  className="input"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
             </div>
-          )}
 
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', marginBottom: '16px', fontSize: '17px', padding: '16px', fontWeight: '600' }} disabled={loading}>
-            {loading ? (
-              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-                <span className="spinner" style={{ width: '20px', height: '20px', borderWidth: '2px' }}></span>
-                <span>Loading...</span>
-              </span>
-            ) : (
-              <span>{isSignup ? 'Create Account' : 'Sign In'}</span>
+            {isSignup && (
+              <div className="form-group">
+                <label className="form-label" htmlFor="auth-master">Master Password</label>
+                <div className="input-with-icon">
+                  <KeyIcon size={18} className="input-icon" />
+                  <input
+                    id="auth-master"
+                    type="password"
+                    className="input"
+                    value={masterPassword}
+                    onChange={(e) => setMasterPassword(e.target.value)}
+                    placeholder="For encryption only"
+                    required
+                  />
+                </div>
+                <p className="form-hint">
+                  This password encrypts your data. It cannot be recovered if lost.
+                </p>
+              </div>
             )}
-          </button>
 
-          <button
-            type="button"
-            className="btn btn-secondary"
-            style={{ width: '100%', fontSize: '17px', padding: '16px', fontWeight: '600' }}
-            onClick={() => setIsSignup(!isSignup)}
-          >
-            {isSignup ? 'Already have an account?' : 'Create account'}
-          </button>
+            {error && (
+              <div className="error-box">
+                <AlertCircle size={16} />
+                <span>{error}</span>
+              </div>
+            )}
 
-          <div style={{ margin: '24px 0', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '14px' }}>
-            or
-          </div>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{ width: '100%', marginBottom: '12px', padding: '14px' }}
+              disabled={loading}
+              id="auth-submit"
+            >
+              {loading ? (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px' }} />
+                  <span>Loading...</span>
+                </span>
+              ) : (
+                <span>{isSignup ? 'Create Account' : 'Sign In'}</span>
+              )}
+            </button>
 
-          <button
-            type="button"
-            className="btn"
-            style={{ width: '100%', background: 'white', color: '#333', border: '1px solid #ddd' }}
-            onClick={handleGoogleSignIn}
-            disabled={loading}
-          >
-            <span style={{ marginRight: '8px' }}>🔍</span>
-            Continue with Google
-          </button>
-        </form>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{ width: '100%' }}
+              onClick={() => setIsSignup(!isSignup)}
+              id="auth-toggle"
+            >
+              {isSignup ? 'Already have an account?' : 'Create account'}
+            </button>
+
+            <div className="form-divider">or</div>
+
+            <button
+              type="button"
+              className="btn btn-google"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              id="auth-google"
+            >
+              <GoogleIcon size={20} />
+              Continue with Google
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
     </>
   );
 }
