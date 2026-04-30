@@ -16,6 +16,7 @@ export default function Document() {
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         
         {/* Meta Tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
         <meta name="theme-color" content="#000000" />
         <meta name="description" content="Obscura - Secure vault application with end-to-end encryption for storing API keys, passwords, and secure notes" />
         <meta name="keywords" content="password manager, secure vault, encryption, API keys, password storage" />

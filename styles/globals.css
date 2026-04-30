@@ -196,6 +196,48 @@ body {
   will-change: transform;
 }
 
+/* ----------------------------------------
+   Premium Noise Grain Overlay
+   ---------------------------------------- */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 200px 200px;
+}
+
+[data-theme="light"] .noise-overlay {
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+}
+
+/* ----------------------------------------
+   Vignette Overlay — Premium Depth
+   ---------------------------------------- */
+.vignette-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+}
+
+[data-theme="light"] .vignette-overlay {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(15, 23, 42, 0.06) 100%
+  );
+}
+
 /* Layer 1 — Slow moving gradient mesh */
 [data-theme="dark"] .animated-bg-mesh {
   background:
@@ -305,22 +347,32 @@ a:hover {
    Scrollbar
    ---------------------------------------- */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
   background: transparent;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-hover);
-  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
   transition: background 0.3s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-tertiary);
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  background-clip: padding-box;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
 }
 
 /* ----------------------------------------

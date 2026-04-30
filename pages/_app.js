@@ -11,6 +11,8 @@ export default function App({ Component, pageProps }) {
       </Head>
       <div className="animated-bg-layer animated-bg-mesh" />
       <div className="animated-bg-layer animated-bg-aurora" />
+      <div className="noise-overlay" aria-hidden="true" />
+      <div className="vignette-overlay" aria-hidden="true" />
       <Component {...pageProps} />
     </>
   );
